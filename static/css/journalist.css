@@ -1,0 +1,28 @@
+.title{
+	margin: auto;
+	text-align: center;
+}
+
+body {
+	background-color: #FFECD9;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	margin-top: 50px;
+}
+
+.button {
+	width: 200px;
+    height: 200px;
+    margin: auto;
+    background-color: #D0F0C0;
+    align-content: center;
+    margin-bottom: 50px;
+    text-align: center;
+    display: flex;
+    font: CAPTION;
+}
+

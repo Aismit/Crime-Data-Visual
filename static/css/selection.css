@@ -1,0 +1,117 @@
+.title{
+	margin: auto;
+	text-align: center;
+}
+
+body {
+	background-color: #FFECD9;
+	padding-top: 20px;
+}
+
+
+input[type=text] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: none;
+  background-color: #3CBC8D;
+  color: white;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	margin-top: 50px;
+}
+
+.button {
+	width: 200px;
+    height: 200px;
+    margin: auto;
+    background-color: #D0F0C0;
+    align-content: center;
+    margin-bottom: 50px;
+    text-align: center;
+    display: flex;
+    font: CAPTION;
+}
+
+.tinsert {
+	background-color: #D0F0C0;
+}
+
+.clientspage h1 {
+    font-size: 2em;
+    margin: 0;
+    padding: 10px 40px;
+    color: #fff;
+    background: #03A9F4;
+}
+
+.clientspage p{
+  font-size :1.2em;
+  font-weight:normal;
+  display:inline-block;
+  padding : 0px 20px;
+  color:red ;
+}
+
+div.clientspage {
+    width: 60%;
+    margin: 0 auto;
+    padding: 0px 0px 40px 0px;
+    border: 1px solid #c7c3c3;
+}
+
+div#inputboxsec {
+    margin: 10px 40px;
+}
+
+#inputboxsec input {
+    padding: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+#inputboxsec .ion-ios-minus {
+    font-size: 26px;
+    color: #f13333;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#inputboxsec i#addnewinput {
+    font-size: 25px;
+    color: #1d82bd;
+    cursor: pointer;
+}
+
+.ion-ios-minus:before {
+    content: "\f464";
+}
+
+.ion-ios-plus-empty:before {
+    content: "\f489";
+}
+
+
+[data-role="dynamic-fields"] > .form-inline + .form-inline {
+    margin-top: 0.5em;
+}
+
+[data-role="dynamic-fields"] > .form-inline [data-role="add"] {
+    display: none;
+}
+
+[data-role="dynamic-fields"] > .form-inline:last-child [data-role="add"] {
+    display: inline-block;
+}
+
+[data-role="dynamic-fields"] > .form-inline:last-child [data-role="remove"] {
+    display: none;
+}
+
+

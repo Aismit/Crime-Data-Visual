@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/selection.css')}}">
+	</head>
+	<body>
+		<h1 class="title"> Craft your Query part 1 </h1> 
+		<h1 class="title"> Select: </h1> 
+		<div class='container'>
+			<div class='button'>
+				<a class='title' href="{{url_for('nyc')}}" > <h1> NYC </h1> </a> 
+			</div>
+			<div class='button'>
+				<a class='title' href="{{url_for('atl')}}" > <h1> Atlanta </h1> </a> 
+			</div>
+			<div class='button'>
+				<a class='title' href="{{url_for('aus')}}" > <h1> Austin</h1> </a> 
+			</div>
+			<div class='button'>
+				<a class='title' href="{{url_for('chi')}}" > <h1> Chicago</h1> </a> 
+			</div>
+		</div>
+	
+	</body>
+</html>

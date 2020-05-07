@@ -1,10 +1,10 @@
 # Variable Names
 LOCAL_DB ?= ~/Desktop/info290T_Final_Project/crime_db/
-SERVER_NAME ?= server290Tproj
-NETWORK_NAME ?= net290TProj
-DB_NAME ?= db290TProj
+SERVER_NAME ?= server290tproj
+NETWORK_NAME ?= net290tproj
+DB_NAME ?= db290tproj
 MYSQL_PASSWORD ?= pw
-MYSQL_DB_NAME ?= db290TProj
+MYSQL_DB_NAME ?= db290tproj
 
 # Network Targets
 

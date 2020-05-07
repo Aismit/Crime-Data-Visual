@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/selection.css')}}">
+		<script type='text/javascript'>
+		$(document).ready(function(){
+var count = 1;
+  if($('#inputboxsec').children().length <=1){
+    $('#inputboxsec').find('.ion-ios-minus').css('display','none')
+  }
+  else{
+  $( "#inputboxsec div:first-child" ).find(".ion-ios-minus").css('display','inline-block')
+  }
+	$("#inputboxsec").on("click","#addnewinput",function(e){
+
+
+	count=count+1;
+    var mainsection=$("#inputboxsec");
+    var submainsec=$("<div>",{        
+        'id' : "wrapperofattach"+count,
+    });
+    mainsection.append(submainsec);
+    submainsec.append($("<input>",{
+        'type': "text",
+        'id' : "inputattachone"+count,
+        'name' : "inputattach[]",
+        'class':'dynamicinput',
+        'placeholder' : "Enter Input..",         
+        'required' : ""         
+    })).append($("<input>",{
+    	'type': "text",
+        'id' : "inputattachotwo"+count,
+        'name' : "inputattach[]",
+        'class':'dynamicinput',
+        'placeholder' : "Enter Input..",         
+        'required' : ""  
+    })).append($("<i>",{
+        'id' : "deleteattminus"+count,
+        'class' : "ion-ios-minus",
+        'title' : "remove new input box"
+  	
+    })).append($("#addnewinput"));
+    $( "#inputboxsec div:first-child" ).find(".ion-ios-minus").css('display','inline-block');
+
+
+ })
+
+	$("#inputboxsec").on("click",".ion-ios-minus",function(e){
+    var prevele = $(e.target).parent().prev()
+    if($(e.target).next().length > 0){
+    	$(prevele).append($("#addnewinput"))
+        $(e.target).parent().remove()   
+        if($('#inputboxsec').children().length <=1){
+            $(prevele).find('.ion-ios-minus').css("display","none")
+        }       
+    }
+    else{
+        $(e.target).parent().remove();
+        if($('#inputboxsec').children().length <=1){
+            $('#inputboxsec').find('.ion-ios-minus').css("display","none")
+        }         
+     }
+  })
+}) 
+		</script>
+	</head>
+	<body>
+		<h1 class="title"> Craft your Query part 3 </h1> 
+		<h1 class="title"> Where</h1> 
+			<div id="clientspage" class="clientspage datatables" >
+				<h1>Dynamic Input Box</h1>
+				<div class="inputboxone" id="inputboxsec">
+					<div id="wrapperofattach1">
+						<input type="text" name="input1" id="inputattachone1" placeholder="Enter input" />
+						<input type="text" name="input2" id="inputattachtwo1" placeholder="Enter input" />
+						<i class="ion-ios-minus" id="deleteattminus1" title="remove  input box"></i>
+						<i class="ion-plus-circled" id="addnewinput" title="add new input box"></i>
+<!--             <p>( At least one should be there)</p> -->
+					</div>		
+				</div>
+				<div id="admin-dynamicinput">
+				</div>
+			</div>
+		
+	
+	</body>
+</html>

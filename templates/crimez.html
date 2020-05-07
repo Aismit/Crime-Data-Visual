@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/selection.css')}}">
+		<script type='text/javascript'> 
+        var count = 5;
+			$(function() {
+
+    // Remove button click
+    $(document).on(
+        'click',
+        '[data-role="dynamic-fields"] > .form-inline [data-role="remove"]',
+        function(e) {
+            e.preventDefault();
+            $(this).closest('.form-inline').remove();
+        }
+    );
+    // Add button click
+    $(document).on(
+        'click',
+        '[data-role="dynamic-fields"] > .form-inline [data-role="add"]',
+        function(e) {
+            e.preventDefault();
+            var container = $(this).closest('[data-role="dynamic-fields"]');
+            new_field_group = container.children().filter('.form-inline:first-child').clone();
+            new_field_group.find('input').each(function(){
+                $(this).val('');
+                count += 1;
+            });
+
+            container.append(new_field_group);
+        }
+    );
+});
+
+		</script>
+	</head>
+	<body>
+	<h1 class="title"> Query Part 3 </h1> 
+	<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+        	<form action="{{url_for('visualize')}}" method="post">
+            <div data-role="dynamic-fields">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="field-name">Field Name</label>
+                        <input type="text" class="form-control" id="field-name" placeholder="Field Name" name="value1">
+                    </div>
+                    <span>-</span>
+                    <div class="form-group">
+                        <label class="sr-only" for="field-value">Field Value</label>
+                        <input type="text" class="form-control" id="field-value" placeholder="Field Value" name="value2">
+                    </div>
+                    <button class="btn btn-danger" data-role="remove">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <button class="btn btn-primary" data-role="add">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+
+                </div> 
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="field-name">Field Name</label>
+                        <input type="text" class="form-control" id="field-name" placeholder="Field Name", name="value3">
+                    </div>
+                    <span>-</span>
+                    <div class="form-group">
+                        <label class="sr-only" for="field-value">Field Value</label>
+                        <input type="text" class="form-control" id="field-value" placeholder="Field Value", name="value4">
+                    </div>
+                    <button class="btn btn-danger" data-role="remove">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <button class="btn btn-primary" data-role="add">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                    
+                </div>
+             
+                    
+                </div>  <!-- /div.form-inline -->
+            </div>
+            <div class="form-inline">
+                    <div class="form-group">
+                        <input type="submit" >
+                    </div>
+            </form>  <!-- /div[data-role="dynamic-fields"] -->
+        </div>  <!-- /div.col-md-12 -->
+    </div>  <!-- /div.row -->
+</div>
+	</body>
+</html>

@@ -1,0 +1,7 @@
+Flask
+flask_api
+mysqlclient
+mysql-connector
+requests
+numpy
+
