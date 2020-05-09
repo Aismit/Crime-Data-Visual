@@ -7,6 +7,9 @@ import os, json, requests
 import pandas as pd
 import shutil
 import matplotlib.pyplot as plt
+import sys
+from PIL import Image
+
 
 app = Flask(__name__)
 
@@ -40,14 +43,15 @@ def contains_helper(val, val_to_search):
 def visualize():
 	#print("hjsdfsdfs", flush=True)
 	#val = request.form['value']
+
 	global query_parts
 	count = 0
 	val_to_add = []
 	if request.form.get('start_year_value') != "":
-		val_to_add += ['Time > ' + str(request.form.get('start_year_value'))]
+		val_to_add += ["Time > '" + str(request.form.get('start_year_value')).replace("/","?") + "'"]
 		count += 1 
 	if request.form.get('end_year_value') != "":
-		val_to_add += ["Time < " + str(request.form.get('end_year_value'))]
+		val_to_add += ["Time < '" + str(request.form.get('end_year_value')).replace("/","?") + "'"]
 		count += 1
 	if request.form.get("description_text") != "":
 		val_to_add += ["VictimDescription like %{" + str(request.form.get("description_text")) + "!= }%"]
@@ -55,9 +59,10 @@ def visualize():
 	if request.form.get("precincts_entered") != "":
 		precincts = request.form.get("precincts_entered").split(",")
 		temp = ""
+		query_parts["precincts"] = len(precincts)
 		if len(precincts) > 1:
 			for elem in precincts:
-				temp += "Precinct like %'" + elem + "'' OR "
+				temp += "Location like '%" + elem + "%' OR "
 		temp = temp[:-4]
 		val_to_add += ["(" + temp + ")"]
 		count += 1
@@ -71,21 +76,21 @@ def visualize():
 		weapons = weapons.split(",") 
 		print(weapons, flush=True)
 		temp = ""
-		if len(weapons) > 1:
+		if len(weapons) > 0:
 			for elem in weapons:
 				temp += "Weapon like '%" + elem + "%' OR "
 		temp = temp[:-4]
 		val_to_add += ["(" + temp + ")"]
 		count += 1
 	if count > 0:
-		sql = "Select * from final_dataset where City = '" + str(query_parts['location']) + "'"
+		sql = "Select * from crimetable where City = '" + str(query_parts['location']) + "'"
 		for val in val_to_add:
 			sql += " AND " + val
 		#sql = sql[:-5]
 		sql = sql + ";"
 		print(sql, flush=True) 
 	else:
-		sql = "Select * from final_dataset where City = '" + str(query_parts['location']) + "' ;"
+		sql = "Select * from crimetable where City = '" + str(query_parts['location']) + "' ;"
 	#print(request.form['value1'], flush=True)
 	#sql = 'select * from crime2 where City="BOS" and Weapon like "%FIREARM%"'
 	query_parts["sql"] = sql
@@ -102,6 +107,88 @@ def visualize():
 	print(os.listdir(), flush=True)
 	print(request.form, flush=True)
 	return render_template('visualize.html')
+
+@app.route('/gbt', methods=["GET", "POST"])
+def gbt():
+	global query_parts
+	num_precincts = query_parts["precincts"]
+	count = 0
+	sql = query_parts["sql"]
+	temp = sql.find("(Location")
+	temp2 = sql.find(")")
+	in_between = sql[temp+1:temp2]
+	print(in_between,flush=True)
+	ibvals = in_between.split("OR")
+	print(ibvals, flush=True)
+	temp3 = sql[:temp] + sql[temp2 + 1:]
+	print(temp3, flush=True)
+
+	list_of_dfs = []
+	for elem in ibvals:
+		csql = sql[:temp] + elem + sql[temp2 + 1:]
+		count = csql.find("*")
+		t4 = csql[:count] + "Time, count(*)" + csql[count + 1: -1] + " group by Time order by Time;"
+		print(t4, flush=True)
+		cursor.execute(t4)
+		list_of_dfs+= [pd.DataFrame(cursor.fetchall())]
+
+	#color = ["r","g","b"]
+	print(os.listdir(), flush=True)
+	count = 3
+	img_list = []
+	for elem in list_of_dfs:
+		df = pd.DataFrame({'time': list(elem[1].values)}, index = list(elem[0].values))
+		ax = df.plot(kind="line",use_index=True, rot = 90)
+		fig = ax.get_figure()
+		fig.savefig("temp" + str(count) + ".png", dpi=100, bbox_inches = 'tight')
+		plt.clf()
+		print(elem.count, flush=True)
+		img_list += ["temp" + str(count)+".png"]
+		#shutil.move("temp" + str(count) + ".png", "static/" + "temp" + str(count) + ".png")
+		count += 1
+	print(os.listdir(), flush=True)
+
+	images = [Image.open(x) for x in img_list]
+	widths, heights = zip(*(i.size for i in images))
+
+	total_width = sum(widths)
+	max_height = max(heights)
+
+	new_im = Image.new('RGB', (total_width, max_height))
+
+	x_offset = 0
+	for im in images:
+  		new_im.paste(im, (x_offset,0))
+  		x_offset += im.size[0]
+
+	new_im.save('temp_combined.jpg')
+	shutil.move("temp_combined.png", "static/temp_combined.png")
+
+	# sql = query_parts["sql"]
+	# count = sql.find("*")
+	# sql = sql[:count] + "Location, count(*)" + sql[count + 1: -1] + " group by Location;"
+	# print(sql, flush=True)
+	# cursor.execute(sql)
+	# data = pd.DataFrame(cursor.fetchall())
+	# print(list(data.columns), flush=True)
+	# plt.clf()
+	# df = pd.DataFrame({'location':list(data[1].values)}, index = list(data[0].values))
+	# print(df.count, flush=True)
+	# ax = df.plot(kind="bar",use_index=True, rot=90)
+	#bar(rot=90)
+	#fig = ax.get_figure()
+	#print(os.listdir(), flush=True)
+	#fig.savefig("temp2.png", dpi=100, bbox_inches = 'tight')
+	#plt.show()
+	#plt.xticks(rotation=90)
+	#plt.savefig("temp.png")
+	
+
+	print(os.listdir(), flush=True)
+	#shutil.move('temp2.png', 'static/temp2.png')
+	#os.chdir("static")
+	#print(os.listdir(), flush=True)
+	return render_template('showgraphtime.html')
 
 @app.route('/gbl', methods=["GET", "POST"])
 def gbl():
