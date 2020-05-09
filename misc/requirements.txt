@@ -5,3 +5,4 @@ mysql-connector
 requests
 numpy
 pandas
+matplotlib

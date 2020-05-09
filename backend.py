@@ -6,7 +6,7 @@ import numpy as np
 import os, json, requests
 import pandas as pd
 import shutil
-
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
@@ -40,19 +40,7 @@ def contains_helper(val, val_to_search):
 def visualize():
 	#print("hjsdfsdfs", flush=True)
 	#val = request.form['value']
-	sql = 'select * from crime2 where City="BOS" and Weapon like "%FIREARM%"'
-	cursor.execute(sql)
-	data = pd.DataFrame(cursor.fetchall())
-	
-	data.to_csv('boston.csv',index=False) 
-	data.to_html('tempdata.html')
-	print(os.listdir(), flush=True)
-	#print(os.getcwd(), flush=True)
-	#print(os.listdir(), flush=True)
-	shutil.move('tempdata.html', 'templates/tempdata.html')
-	print(os.listdir(), flush=True)
 	global query_parts
-	print(request.form, flush=True)
 	count = 0
 	val_to_add = []
 	if request.form.get('start_year_value') != "":
@@ -90,16 +78,76 @@ def visualize():
 		val_to_add += ["(" + temp + ")"]
 		count += 1
 	if count > 0:
-		sql = "Select * from crimes where City = " + str(query_parts['location'])
+		sql = "Select * from final_dataset where City = '" + str(query_parts['location']) + "'"
 		for val in val_to_add:
 			sql += " AND " + val
 		#sql = sql[:-5]
 		sql = sql + ";"
 		print(sql, flush=True) 
 	else:
-		sql = "Select * from crimes where City = '" + str(query_parts['location']) + "' ;"
+		sql = "Select * from final_dataset where City = '" + str(query_parts['location']) + "' ;"
 	#print(request.form['value1'], flush=True)
+	#sql = 'select * from crime2 where City="BOS" and Weapon like "%FIREARM%"'
+	query_parts["sql"] = sql
+	cursor.execute(sql)
+	data = pd.DataFrame(cursor.fetchall())
+	print(sql, flush=True)
+	print(data.count, flush=True)
+	#data.to_csv('boston.csv',index=False) 
+	data.to_html('tempdata.html')
+	print(os.listdir(), flush=True)
+	#print(os.getcwd(), flush=True)
+	#print(os.listdir(), flush=True)
+	shutil.move('tempdata.html', 'templates/tempdata.html')
+	print(os.listdir(), flush=True)
+	print(request.form, flush=True)
 	return render_template('visualize.html')
+
+@app.route('/gbl', methods=["GET", "POST"])
+def gbl():
+	global query_parts
+	sql = query_parts["sql"]
+	count = sql.find("*")
+	sql = sql[:count] + "Location, count(*)" + sql[count + 1: -1] + " group by Location;"
+	print(sql, flush=True)
+	cursor.execute(sql)
+	data = pd.DataFrame(cursor.fetchall())
+	print(list(data.columns), flush=True)
+	plt.clf()
+	df = pd.DataFrame({'location':list(data[1].values)}, index = list(data[0].values))
+	print(df.count, flush=True)
+	ax = df.plot(kind="bar",use_index=True, rot=90)
+	#bar(rot=90)
+	fig = ax.get_figure()
+	print(os.listdir(), flush=True)
+	fig.savefig("temp2.png", dpi=100, bbox_inches = 'tight')
+	#plt.show()
+	#plt.xticks(rotation=90)
+	#plt.savefig("temp.png")
+	plt.clf()
+
+	print(os.listdir(), flush=True)
+	shutil.move('temp2.png', 'static/temp2.png')
+	#os.chdir("static")
+	#print(os.listdir(), flush=True)
+	return render_template('showgraph.html')
+
+@app.route('/groupbylocation', methods=["GET", "POST"])
+def groupbylocation():
+	global query_parts
+	sql = query_parts["sql"]
+	count = sql.find("*")
+	sql = sql[:count] + "Location, count(*)" + sql[count + 1: -1] + " group by Location;"
+	print(sql, flush=True)
+	return render_template('nyc.html')
+
+@app.route('/data', methods=["GET", "POST"])
+def data():
+	global query_parts
+	query_parts['info'] = 'crimes'
+	print("YESS", flush=True)
+	return render_template('crimez.html')
+	
 
 @app.route('/crimes', methods=["GET", "POST"])
 def crimes():
@@ -125,26 +173,32 @@ def offenders():
 @app.route('/nyc', methods=["GET"])
 def nyc():
 	global query_parts
-	query_parts['location'] = 'nyc'
+	query_parts['location'] = 'NYC'
+	return render_template('nyc.html')
+
+@app.route('/bos', methods=["GET"])
+def bos():
+	global query_parts
+	query_parts['location'] = 'BOS'
 	return render_template('nyc.html')
 
 
 @app.route('/atl', methods=["GET"])
 def atl():
 	global query_parts
-	query_parts['location'] = 'atl'
+	query_parts['location'] = 'ATL'
 	return render_template('atl.html')
 
 @app.route('/aus', methods=["GET"])
 def aus():
 	global query_parts
-	query_parts['location'] = 'aus'
+	query_parts['location'] = 'AUS'
 	return render_template('aus.html')
 
 @app.route('/chi', methods=["GET"])
 def chi():
 	global query_parts
-	query_parts['chi'] = 'chi'
+	query_parts['chi'] = 'CHI'
 	return render_template('chi.html')
 
 @app.route('/journalist', methods=["GET"])
