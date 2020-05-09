@@ -45,7 +45,7 @@ svr-build:
 	docker build -t $(SERVER_NAME) .
 
 svr-run:
-	docker run -d -p 5000:5000 --network $(NETWORK_NAME) --name $(SERVER_NAME) $(SERVER_NAME)
+	docker run -d -p 5000:5000 --network $(NETWORK_NAME) --name $(SERVER_NAME) $(SERVER_NAME) 
 
 svr-stop:
 	docker stop $(SERVER_NAME)

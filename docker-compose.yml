@@ -1,0 +1,5 @@
+version: '2.0'
+
+services:
+    volumes:
+      - ~/Desktop/Info290T_Final_Project/data:/app/data

@@ -4,4 +4,4 @@ mysqlclient
 mysql-connector
 requests
 numpy
-
+pandas

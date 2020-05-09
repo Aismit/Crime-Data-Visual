@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/selection.css')}}">
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+
+        <script type="text/javascript"charset="utf-8">
+            d3.text("boston.csv", function(data) {
+                var parsedCSV = d3.csv.parseRows(data);
+
+                var container = d3.select("body")
+                    .append("table")
+
+                    .selectAll("tr")
+                        .data(parsedCSV).enter()
+                        .append("tr")
+
+                    .selectAll("td")
+                        .data(function(d) { return d; }).enter()
+                        .append("td")
+                        .text(function(d) { return d; });
+            });
+        </script>
+	</head>
+	<body>
+		<h1 class="title"> Visualize </h1> 
+		
+	
+	</body>
+</html>

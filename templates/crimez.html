@@ -48,13 +48,13 @@
             <div data-role="dynamic-fields">
                 <div class="form-inline">
                     <div class="form-group">
-                        <label class="sr-only" for="field-name">Field Name</label>
-                        <input type="text" class="form-control" id="field-name" placeholder="Field Name" name="value1">
+                        <label class="sr-only" for="field-name">Start Year</label>
+                        <input type="text" class="form-control" id="field-name" placeholder="Start Year" name="start_year">
                     </div>
                     <span>-</span>
                     <div class="form-group">
-                        <label class="sr-only" for="field-value">Field Value</label>
-                        <input type="text" class="form-control" id="field-value" placeholder="Field Value" name="value2">
+                        <label class="sr-only" for="field-value">Year Value</label>
+                        <input type="text" class="form-control" id="field-value" placeholder="Enter Start Year" name="start_year_value">
                     </div>
                     <button class="btn btn-danger" data-role="remove">
                         <span class="glyphicon glyphicon-remove"></span>
@@ -66,13 +66,13 @@
                 </div> 
                 <div class="form-inline">
                     <div class="form-group">
-                        <label class="sr-only" for="field-name">Field Name</label>
-                        <input type="text" class="form-control" id="field-name" placeholder="Field Name", name="value3">
+                        <label class="sr-only" for="field-name">End Year</label>
+                        <input type="text" class="form-control" id="field-name" placeholder="End Year", name="end_year">
                     </div>
                     <span>-</span>
                     <div class="form-group">
-                        <label class="sr-only" for="field-value">Field Value</label>
-                        <input type="text" class="form-control" id="field-value" placeholder="Field Value", name="value4">
+                        <label class="sr-only" for="field-value">Year Value</label>
+                        <input type="text" class="form-control" id="field-value" placeholder="Enter End Year", name="end_year_value">
                     </div>
                     <button class="btn btn-danger" data-role="remove">
                         <span class="glyphicon glyphicon-remove"></span>
@@ -80,7 +80,108 @@
                     <button class="btn btn-primary" data-role="add">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
-                    
+                </div>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="field-name">Description</label>
+                        <input type="text" class="form-control" id="field-name" placeholder="Description", name="description">
+                    </div>
+                    <span>-</span>
+                    <div class="form-group">
+                        <label class="sr-only" for="field-value">Give Description Here</label>
+                        <input type="text" class="form-control" id="field-value" placeholder="Give Description Here", name="description_text">
+                    </div>
+                    <button class="btn btn-danger" data-role="remove">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <button class="btn btn-primary" data-role="add">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="field-name">Precincts</label>
+                        <input type="text" class="form-control" id="field-name" placeholder="Precincts", name="precincts">
+                    </div>
+                    <span>-</span>
+                    <div class="form-group">
+                        <label class="sr-only" for="field-value">Separate them by commas</label>
+                        <input type="text" class="form-control" id="field-value" placeholder="Enter Precincts separate by commas", name="precincts_entered">
+                    </div>
+                    <button class="btn btn-danger" data-role="remove">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <button class="btn btn-primary" data-role="add">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="field-name">Apprehended</label>
+                        <input type="text" class="form-control" id="field-name" placeholder="Apprehended", name="apprehended">
+                    </div>
+                    <span>-</span>
+                    <div class="form-group">
+                        <label class="sr-only" for="field-value">Apprehended Value</label>
+                        <input type="text" class="form-control" id="field-value" placeholder="true or false", name="apprehended_bool">
+                    </div>
+                    <button class="btn btn-danger" data-role="remove">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <button class="btn btn-primary" data-role="add">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="field-name">Starting Age</label>
+                        <input type="text" class="form-control" id="field-name" placeholder="Starting Age", name="start_age">
+                    </div>
+                    <span>-</span>
+                    <div class="form-group">
+                        <label class="sr-only" for="field-value">Starting Age </label>
+                        <input type="text" class="form-control" id="field-value" placeholder="Enter a starting age", name="start_age_value">
+                    </div>
+                    <button class="btn btn-danger" data-role="remove">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <button class="btn btn-primary" data-role="add">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="field-name">Ending Age</label>
+                        <input type="text" class="form-control" id="field-name" placeholder="Ending Age", name="end_age">
+                    </div>
+                    <span>-</span>
+                    <div class="form-group">
+                        <label class="sr-only" for="field-value">Ending Age </label>
+                        <input type="text" class="form-control" id="field-value" placeholder="Enter a ending age", name="end_age_value">
+                    </div>
+                    <button class="btn btn-danger" data-role="remove">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <button class="btn btn-primary" data-role="add">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="field-name">Weapons</label>
+                        <input type="text" class="form-control" id="field-name" placeholder="Weapons", name="weapon">
+                    </div>
+                    <span>-</span>
+                    <div class="form-group">
+                        <label class="sr-only" for="field-value">List Of weapons </label>
+                        <input type="text" class="form-control" id="field-value" placeholder="weapons:x,y", name="weapons_list">
+                    </div>
+                    <button class="btn btn-danger" data-role="remove">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <button class="btn btn-primary" data-role="add">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
                 </div>
              
                     
