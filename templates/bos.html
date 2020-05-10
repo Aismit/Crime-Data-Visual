@@ -1,1 +1,19 @@
-bos.html
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/selection.css')}}">
+	</head>
+	<body>
+		<h1 class="title"> Craft your Query 2 </h1>
+		<h1 class="title"> Select: </h1>  
+		<div class='container'>
+			<div class='button'>
+				<a class='title' href="{{url_for('crimes')}}" > <h1> Crimes</h1> </a> 
+			</div>
+			<div class='button'>
+				<a class='title' href="{{url_for('crimes')}}" > <h1> Offenders </h1> </a>  
+			</div>
+		</div>
+	
+	</body>
+</html>

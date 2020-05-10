@@ -38,6 +38,23 @@ def contains_helper(val, val_to_search):
 	return False
 
 
+def check_validity(profession, field_to_check):
+	citizen = {"VictimDescription"}
+	journalist = {"VictimDescription", "SuspectDescription"}
+	politician = {"Location"}
+	if profession == "citizen":
+		print(field_to_check, flush=True)
+		if field_to_check in citizen:
+			return False
+		print("hello", flush=True)
+	if profession == "journalist":
+		if field_to_check in journalist:
+			return False
+	if profession == "politician":
+		if field_to_check in politician:
+			return False
+	return True
+
 
 @app.route('/visualize', methods=["POST"])
 def visualize():
@@ -54,6 +71,10 @@ def visualize():
 		val_to_add += ["Time < '" + str(request.form.get('end_year_value')).replace("/","?") + "'"]
 		count += 1
 	if request.form.get("description_text") != "":
+		print(query_parts["job"], flush=True)
+		print(check_validity(query_parts["job"], "VictimDescription"), flush=True)
+		if not check_validity(query_parts["job"], "VictimDescription"):
+			return render_template("unauthorized.html", prof=query_parts["job"], val="VictimDescription")
 		val_to_add += ["VictimDescription like %{" + str(request.form.get("description_text")) + "!= }%"]
 		count += 1
 	if request.form.get("precincts_entered") != "":
@@ -83,14 +104,14 @@ def visualize():
 		val_to_add += ["(" + temp + ")"]
 		count += 1
 	if count > 0:
-		sql = "Select * from crimetable where City = '" + str(query_parts['location']) + "'"
+		sql = "Select * from crimedb where City = '" + str(query_parts['location']) + "'"
 		for val in val_to_add:
 			sql += " AND " + val
 		#sql = sql[:-5]
 		sql = sql + ";"
 		print(sql, flush=True) 
 	else:
-		sql = "Select * from crimetable where City = '" + str(query_parts['location']) + "' ;"
+		sql = "Select * from crimedb where City = '" + str(query_parts['location']) + "' ;"
 	#print(request.form['value1'], flush=True)
 	#sql = 'select * from crime2 where City="BOS" and Weapon like "%FIREARM%"'
 	query_parts["sql"] = sql
@@ -98,6 +119,7 @@ def visualize():
 	data = pd.DataFrame(cursor.fetchall())
 	print(sql, flush=True)
 	print(data.count, flush=True)
+	data.columns = ["id", "city", "crime", "insertiontime", "location", "precinct", "suspectdescription", "time", "victimedescription", "weapon"]
 	#data.to_csv('boston.csv',index=False) 
 	data.to_html('tempdata.html')
 	print(os.listdir(), flush=True)
@@ -161,8 +183,12 @@ def gbt():
   		new_im.paste(im, (x_offset,0))
   		x_offset += im.size[0]
 
-	new_im.save('temp_combined.jpg')
+	new_im.save('temp_combined.png')
+
+	print(os.listdir(), flush=True)
 	shutil.move("temp_combined.png", "static/temp_combined.png")
+	#os.chdir("static")
+	#print(os.listdir(), flush=True)
 
 	# sql = query_parts["sql"]
 	# count = sql.find("*")
@@ -290,6 +316,26 @@ def chi():
 
 @app.route('/journalist', methods=["GET"])
 def journalist():
+	global query_parts
+	query_parts["job"] = "journalist"
+	return render_template('journalist.html')
+
+@app.route('/politician', methods=["GET"])
+def politician():
+	global query_parts
+	query_parts["job"] = "politician"
+	return render_template('journalist.html')
+
+@app.route('/policeofficer', methods=["GET"])
+def policeofficer():
+	global query_parts
+	query_parts["job"] = "policeofficer"
+	return render_template('journalist.html')
+
+@app.route('/citizen', methods=["GET"])
+def citizen():
+	global query_parts
+	query_parts["job"] = "citizen"
 	return render_template('journalist.html')
 
 if __name__ == '__main__':
