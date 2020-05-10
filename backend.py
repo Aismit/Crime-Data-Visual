@@ -9,6 +9,7 @@ import shutil
 import matplotlib.pyplot as plt
 import sys
 from PIL import Image
+import time
 
 
 app = Flask(__name__)
@@ -18,10 +19,75 @@ query_parts = {}
 # with app.app_context(), app.test_request_context():
 # 	print(url_for('static', filename='css/selection.css', _external =True), flush=True)
 
+def check_effectiveness():
+
+
+	start = time.time()
+
+	sql = "Select * from crimedb where (Location like '%BROOKLYN%' OR Location like '%QUEENS%') and Time > '2010?01' and Time < '2011?01';"
+
+	cursor.execute(sql)
+	data = cursor.fetchall()
+	end = time.time()
+
+	print("Time of Query Execution with no index" + str(end-start), flush=True)
+
+	sql = "Create INDEX locindex on crimedb(Location);"
+	cursor.execute(sql)
+
+	start = time.time()
+
+	sql = "Select * from crimedb where (Location like '%BROOKLYN%' OR Location like '%QUEENS%') and Time > '2010?01' and Time < '2011?01';"
+
+	cursor.execute(sql)
+	data = cursor.fetchall()
+	end = time.time()
+
+	print("Time of Query Execution with an index on location" + str(end-start), flush=True)
+
+	sql = "Drop INDEX locindex on crimedb"
+	cursor.execute(sql)
+
+	sql = "Create INDEX timeindex on crimedb(Time);"
+	cursor.execute(sql)
+
+	start = time.time()
+
+	sql = "Select * from crimedb where (Location like '%BROOKLYN%' OR Location like '%QUEENS%') and Time > '2010?01' and Time < '2011?01';"
+	
+	cursor.execute(sql)
+	data = cursor.fetchall()
+	end = time.time()
+
+	print("Time of Query Execution with an index on the date " + str(end-start), flush=True)
+
+	sql = "Drop INDEX timeindex on crimedb"
+	cursor.execute(sql)
+
+	sql = "Create INDEX locindex on crimedb(Location);"
+	cursor.execute(sql)
+
+	sql = "Create INDEX timeindex on crimedb(Time);"
+	cursor.execute(sql)
+
+
+	start = time.time()
+	sql = "Select * from crimedb where (Location like '%BROOKLYN%' OR Location like '%QUEENS%') and Time > '2010?01' and Time < '2011?01';"
+	cursor.execute(sql)
+	data = cursor.fetchall()
+	end = time.time()
+
+	print("Time of Query Execution with an index on the date and an inex on location " + str(end-start), flush=True)
+	return
+
+
+	
+
 @app.route('/', methods=["GET"])
 def get_selection_page():
 	#with app.app_context(), app.test_request_context():
 		#print(url_for('static', filename='css/selection.css', _external =True), flush=True)
+	check_effectiveness()
 	return render_template('selection.html')
 
 # @app.route('/police', methods=["POST"]):
