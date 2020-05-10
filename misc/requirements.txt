@@ -6,4 +6,4 @@ requests
 numpy
 pandas
 matplotlib
-PIL
+Pillow
